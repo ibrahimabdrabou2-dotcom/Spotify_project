@@ -39,33 +39,6 @@ Query performance and database optimization
 
 The project is designed not only to practice SQL syntax, but also to demonstrate how SQL can be used to extract business-oriented insights from real-world data.
 
-🗂️ Dataset
-
-The dataset contains information about Spotify tracks and their performance across different platforms.
-
-Main Features
-Column	Description
-artist	Artist name
-track	Track name
-album	Album name
-album_type	Album, Single, etc.
-danceability	Danceability score
-energy	Energy score
-loudness	Track loudness
-speechiness	Speechiness score
-acousticness	Acousticness score
-instrumentalness	Instrumentalness score
-liveness	Liveness score
-valence	Musical positivity
-tempo	Track tempo
-duration_min	Track duration in minutes
-views	Number of views
-likes	Number of likes
-comments	Number of comments
-stream	Number of streams
-licensed	Whether the track is licensed
-official_video	Whether the track has an official video
-most_played_on	Platform where the track was most played
 🔎 Project Workflow
 1. Data Exploration
 
