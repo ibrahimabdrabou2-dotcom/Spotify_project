@@ -93,17 +93,27 @@ Identify tracks that have more than 1 billion streams.
 SELECT track
 FROM spotify
 WHERE stream > 1000000000;
+
+
+
+
 2. Albums and Their Artists
 SELECT DISTINCT album, artist
-FROM spotify;
+FROM spotify; 
+
+
 3. Total Comments for Licensed Tracks
 SELECT SUM(comments) AS total_comments
 FROM spotify
 WHERE licensed = TRUE;
+
+
 4. Tracks from Single Releases
 SELECT track
 FROM spotify
 WHERE album_type = 'single';
+
+
 5. Number of Tracks per Artist
 SELECT
     artist,
@@ -112,6 +122,9 @@ FROM spotify
 GROUP BY artist
 ORDER BY total_tracks DESC;
 🟡 Medium Level
+
+
+
 6. Average Danceability by Album
 SELECT
     album,
@@ -119,11 +132,16 @@ SELECT
 FROM spotify
 GROUP BY album
 ORDER BY avg_danceability DESC;
+
+
 7. Top 5 Tracks by Energy
 SELECT *
 FROM spotify
 ORDER BY energy DESC
 LIMIT 5;
+
+
+
 8. Views and Likes for Official Videos
 SELECT
     track,
@@ -133,6 +151,9 @@ FROM spotify
 WHERE official_video = TRUE
 GROUP BY track
 ORDER BY total_views DESC;
+
+
+
 9. Total Views by Album and Track
 SELECT
     album,
@@ -141,6 +162,8 @@ SELECT
 FROM spotify
 GROUP BY album, track
 ORDER BY total_views DESC;
+
+
 10. Tracks Streamed More on Spotify Than YouTube
 
 This analysis uses Conditional Aggregation with CASE WHEN.
@@ -175,7 +198,12 @@ FROM
 
 WHERE streamed_on_spotify > streamed_on_youtube
   AND streamed_on_youtube <> 0;
+
+
 🔴 Advanced Level
+
+
+
 11. Top 3 Most-Viewed Tracks for Each Artist
 
 This analysis demonstrates the use of:
@@ -204,6 +232,9 @@ SELECT *
 FROM ranking
 WHERE rank <= 3
 ORDER BY artist, rank;
+
+
+
 12. Tracks Above Average Liveness
 
 A subquery is used to calculate the overall average liveness score.
@@ -217,6 +248,8 @@ WHERE liveness >
     SELECT AVG(liveness)
     FROM spotify
 );
+
+
 13. Energy Difference Between Highest and Lowest Values
 
 This analysis demonstrates how a CTE can simplify a multi-step calculation.
@@ -239,6 +272,9 @@ ORDER BY energy_diff DESC;
 
 Note: highest_energy, lowest_energy, and energy_diff use consistent naming to keep the query clean and readable.
 
+
+
+
 14. Tracks with High Energy-to-Liveness Ratio
 SELECT
     track,
@@ -248,6 +284,9 @@ SELECT
 FROM spotify
 WHERE energy / NULLIF(liveness, 0) > 1.2
 ORDER BY energy_liveness_ratio DESC;
+
+
+
 15. Cumulative Likes Using Window Functions
 
 This analysis demonstrates the use of a cumulative window calculation.
