@@ -4,86 +4,105 @@ Advanced SQL | PostgreSQL | Data Analysis | Query Optimization
 
 
 
-
 📌 Project Overview
 
 This project focuses on analyzing Spotify music data using PostgreSQL and advanced SQL techniques.
 
 The goal is to transform a raw Spotify dataset into meaningful analytical insights while demonstrating practical SQL skills used by Data Analysts, including:
 
-Data Exploration & Cleaning
-Aggregation & Grouping
-Subqueries
-Common Table Expressions (CTEs)
-Window Functions
-Conditional Aggregation
-Ranking
-Query Optimization
-Indexing
-Execution Plan Analysis using EXPLAIN ANALYZE
+Data Exploration & Cleaning ,
+Aggregation & Grouping ,
+Subqueries ,
+Common Table Expressions (CTEs) ,
+Window Functions ,
+Conditional Aggregation ,
+Ranking ,
+Query Optimization  ,
+Indexing  ,
+Execution Plan Analysis using EXPLAIN ANALYZE  ,
 
 The project contains a series of 15 SQL practice questions divided into Easy, Medium, and Advanced levels.
 
-🎯 Business Objective
+
+
+Business Objective
 
 The analysis aims to answer questions related to:
 
-Most-streamed tracks
-Artist and album performance
-Track popularity
-Audio characteristics such as Energy and Danceability
-Spotify vs YouTube performance
-Top-performing tracks for each artist
-Track engagement through Views, Likes, and Comments
-Query performance and database optimization
+Most-streamed tracks  ,
+Artist and album performance ,
+Track popularity  ,
+Audio characteristics such as Energy and Danceability  ,
+Spotify vs YouTube performance  ,
+Top-performing tracks for each artist  ,
+Track engagement through Views, Likes, and Comments  ,
+Query performance and database optimization  ,
 
 The project is designed not only to practice SQL syntax, but also to demonstrate how SQL can be used to extract business-oriented insights from real-world data.
 
+
 🔎 Project Workflow
+
+
+
 1. Data Exploration
 
 The first step was understanding the structure and characteristics of the dataset.
 
 Examples of exploratory analysis include:
 
-Inspecting the dataset
-Counting distinct artists
-Counting distinct tracks
-Counting distinct albums
-Identifying album types
-Identifying available platforms/channels
-Checking invalid values
+Inspecting the dataset  ,
+Counting distinct artists  ,
+Counting distinct tracks  ,
+Counting distinct albums  , 
+Identifying album types  ,
+Identifying available platforms/channels  ,
+Checking invalid values  , 
+
 
 Example:
 
 SELECT COUNT(DISTINCT artist) AS total_artists
+
 FROM spotify;
 
-SELECT COUNT(DISTINCT track) AS total_tracks
+
+SELECT COUNT(DISTINCT track) AS total_tracks  
+
 FROM spotify;
 
 SELECT COUNT(DISTINCT album) AS total_albums
+
 FROM spotify;
+
+
+
 2. Data Cleaning
 
 Before performing the analysis, the dataset was checked for invalid or problematic records.
 
 For example, tracks with a duration of 0 minutes were identified and removed.
 
-SELECT *
+SELECT * 
+
 FROM spotify
+
 WHERE duration_min = 0;
 
 After identifying these records:
 
 DELETE FROM spotify
+
 WHERE duration_min = 0;
 
 This ensures that invalid records do not affect the analytical results.
 
+
 📊 SQL Analysis
 
 The project contains 15 SQL questions divided into three difficulty levels.
+
+
 
 🟢 Easy Level
 1. Tracks with More Than 1 Billion Streams
@@ -91,29 +110,26 @@ The project contains 15 SQL questions divided into three difficulty levels.
 Identify tracks that have more than 1 billion streams.
 
 SELECT track
+
 FROM spotify
+
 WHERE stream > 1000000000;
-
-
 
 
 2. Albums and Their Artists
 SELECT DISTINCT album, artist
-FROM spotify; 
+FROM spotify;
 
 
-3. Total Comments for Licensed Tracks
-SELECT SUM(comments) AS total_comments
+
+3. Total Comments for Licensed Tracks 
+SELECT SUM(comments) AS total_comments 
 FROM spotify
 WHERE licensed = TRUE;
-
-
 4. Tracks from Single Releases
 SELECT track
 FROM spotify
 WHERE album_type = 'single';
-
-
 5. Number of Tracks per Artist
 SELECT
     artist,
@@ -121,10 +137,9 @@ SELECT
 FROM spotify
 GROUP BY artist
 ORDER BY total_tracks DESC;
+
+
 🟡 Medium Level
-
-
-
 6. Average Danceability by Album
 SELECT
     album,
@@ -132,16 +147,11 @@ SELECT
 FROM spotify
 GROUP BY album
 ORDER BY avg_danceability DESC;
-
-
 7. Top 5 Tracks by Energy
 SELECT *
 FROM spotify
 ORDER BY energy DESC
 LIMIT 5;
-
-
-
 8. Views and Likes for Official Videos
 SELECT
     track,
@@ -151,9 +161,6 @@ FROM spotify
 WHERE official_video = TRUE
 GROUP BY track
 ORDER BY total_views DESC;
-
-
-
 9. Total Views by Album and Track
 SELECT
     album,
@@ -162,8 +169,6 @@ SELECT
 FROM spotify
 GROUP BY album, track
 ORDER BY total_views DESC;
-
-
 10. Tracks Streamed More on Spotify Than YouTube
 
 This analysis uses Conditional Aggregation with CASE WHEN.
@@ -198,12 +203,7 @@ FROM
 
 WHERE streamed_on_spotify > streamed_on_youtube
   AND streamed_on_youtube <> 0;
-
-
 🔴 Advanced Level
-
-
-
 11. Top 3 Most-Viewed Tracks for Each Artist
 
 This analysis demonstrates the use of:
@@ -232,9 +232,6 @@ SELECT *
 FROM ranking
 WHERE rank <= 3
 ORDER BY artist, rank;
-
-
-
 12. Tracks Above Average Liveness
 
 A subquery is used to calculate the overall average liveness score.
@@ -248,8 +245,6 @@ WHERE liveness >
     SELECT AVG(liveness)
     FROM spotify
 );
-
-
 13. Energy Difference Between Highest and Lowest Values
 
 This analysis demonstrates how a CTE can simplify a multi-step calculation.
@@ -272,9 +267,6 @@ ORDER BY energy_diff DESC;
 
 Note: highest_energy, lowest_energy, and energy_diff use consistent naming to keep the query clean and readable.
 
-
-
-
 14. Tracks with High Energy-to-Liveness Ratio
 SELECT
     track,
@@ -284,9 +276,6 @@ SELECT
 FROM spotify
 WHERE energy / NULLIF(liveness, 0) > 1.2
 ORDER BY energy_liveness_ratio DESC;
-
-
-
 15. Cumulative Likes Using Window Functions
 
 This analysis demonstrates the use of a cumulative window calculation.
@@ -484,11 +473,7 @@ Data Exploration
 
 
 
-
 SQL Analysis
-
-
-
 
 Query Optimization — Before
 
@@ -512,29 +497,173 @@ Add the screenshots to the screenshots folder using the filenames above.
 Through this project, I strengthened my ability to:
 
 Work with PostgreSQL databases.
+
 Explore and clean real-world datasets.
+
 Write SQL queries at different levels of complexity.
+
 Use CTEs to structure complex queries.
+
 Apply Window Functions to analytical problems.
+
 Compare performance before and after indexing.
+
 Read and interpret query execution plans.
+
 Translate raw data into meaningful analytical questions.
+
 Think about SQL from both an analytical and performance perspective.
+
 🚀 Future Improvements
 
 Potential future improvements include:
 
 Building an interactive Power BI dashboard from the analyzed data.
+
 Adding more advanced SQL performance experiments.
+
 Testing queries on larger datasets.
+
 Creating additional analytical KPIs.
+
 Comparing Spotify and YouTube performance in greater detail.
+
 Automating the data-cleaning process.
+
 Adding more business-focused insights.
+
+
+
 👨‍💻 Author
 
 Ibrahim Abdrabou
 
-Aspiring Data Analyst focused on:
 
-Excel | Power BI | SQL | Python | Data Analysis
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
