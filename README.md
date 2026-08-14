@@ -1,177 +1,528 @@
-# Spotify Advanced SQL Project and Query Optimization P-6
-Project Category: Advanced
-[Click Here to get Dataset](https://www.kaggle.com/datasets/sanjanchaudhari/spotify-dataset)
+🎵 Spotify Advanced SQL Data Analysis Project
 
-![Spotify Logo](https://github.com/najirh/najirh-Spotify-Data-Analysis-using-SQL/blob/main/spotify_logo.jpg)
+Advanced SQL | PostgreSQL | Data Analysis | Query Optimization
 
-## Overview
-This project involves analyzing a Spotify dataset with various attributes about tracks, albums, and artists using **SQL**. It covers an end-to-end process of normalizing a denormalized dataset, performing SQL queries of varying complexity (easy, medium, and advanced), and optimizing query performance. The primary goals of the project are to practice advanced SQL skills and generate valuable insights from the dataset.
 
-```sql
--- create table
-DROP TABLE IF EXISTS spotify;
-CREATE TABLE spotify (
-    artist VARCHAR(255),
-    track VARCHAR(255),
-    album VARCHAR(255),
-    album_type VARCHAR(50),
-    danceability FLOAT,
-    energy FLOAT,
-    loudness FLOAT,
-    speechiness FLOAT,
-    acousticness FLOAT,
-    instrumentalness FLOAT,
-    liveness FLOAT,
-    valence FLOAT,
-    tempo FLOAT,
-    duration_min FLOAT,
-    title VARCHAR(255),
-    channel VARCHAR(255),
-    views FLOAT,
-    likes BIGINT,
-    comments BIGINT,
-    licensed BOOLEAN,
-    official_video BOOLEAN,
-    stream BIGINT,
-    energy_liveness FLOAT,
-    most_played_on VARCHAR(50)
-);
-```
-## Project Steps
 
-### 1. Data Exploration
-Before diving into SQL, it’s important to understand the dataset thoroughly. The dataset contains attributes such as:
-- `Artist`: The performer of the track.
-- `Track`: The name of the song.
-- `Album`: The album to which the track belongs.
-- `Album_type`: The type of album (e.g., single or album).
-- Various metrics such as `danceability`, `energy`, `loudness`, `tempo`, and more.
 
-### 4. Querying the Data
-After the data is inserted, various SQL queries can be written to explore and analyze the data. Queries are categorized into **easy**, **medium**, and **advanced** levels to help progressively develop SQL proficiency.
+📌 Project Overview
 
-#### Easy Queries
-- Simple data retrieval, filtering, and basic aggregations.
-  
-#### Medium Queries
-- More complex queries involving grouping, aggregation functions, and joins.
-  
-#### Advanced Queries
-- Nested subqueries, window functions, CTEs, and performance optimization.
+This project focuses on analyzing Spotify music data using PostgreSQL and advanced SQL techniques.
 
-### 5. Query Optimization
-In advanced stages, the focus shifts to improving query performance. Some optimization strategies include:
-- **Indexing**: Adding indexes on frequently queried columns.
-- **Query Execution Plan**: Using `EXPLAIN ANALYZE` to review and refine query performance.
-  
----
+The goal is to transform a raw Spotify dataset into meaningful analytical insights while demonstrating practical SQL skills used by Data Analysts, including:
 
-## 15 Practice Questions
+Data Exploration & Cleaning
+Aggregation & Grouping
+Subqueries
+Common Table Expressions (CTEs)
+Window Functions
+Conditional Aggregation
+Ranking
+Query Optimization
+Indexing
+Execution Plan Analysis using EXPLAIN ANALYZE
 
-### Easy Level
-1. Retrieve the names of all tracks that have more than 1 billion streams.
-2. List all albums along with their respective artists.
-3. Get the total number of comments for tracks where `licensed = TRUE`.
-4. Find all tracks that belong to the album type `single`.
-5. Count the total number of tracks by each artist.
+The project contains a series of 15 SQL practice questions divided into Easy, Medium, and Advanced levels.
 
-### Medium Level
-1. Calculate the average danceability of tracks in each album.
-2. Find the top 5 tracks with the highest energy values.
-3. List all tracks along with their views and likes where `official_video = TRUE`.
-4. For each album, calculate the total views of all associated tracks.
-5. Retrieve the track names that have been streamed on Spotify more than YouTube.
+🎯 Business Objective
 
-### Advanced Level
-1. Find the top 3 most-viewed tracks for each artist using window functions.
-2. Write a query to find tracks where the liveness score is above the average.
-3. **Use a `WITH` clause to calculate the difference between the highest and lowest energy values for tracks in each album.**
-```sql
-WITH cte
-AS
-(SELECT 
-	album,
-	MAX(energy) as highest_energy,
-	MIN(energy) as lowest_energery
+The analysis aims to answer questions related to:
+
+Most-streamed tracks
+Artist and album performance
+Track popularity
+Audio characteristics such as Energy and Danceability
+Spotify vs YouTube performance
+Top-performing tracks for each artist
+Track engagement through Views, Likes, and Comments
+Query performance and database optimization
+
+The project is designed not only to practice SQL syntax, but also to demonstrate how SQL can be used to extract business-oriented insights from real-world data.
+
+🗂️ Dataset
+
+The dataset contains information about Spotify tracks and their performance across different platforms.
+
+Main Features
+Column	Description
+artist	Artist name
+track	Track name
+album	Album name
+album_type	Album, Single, etc.
+danceability	Danceability score
+energy	Energy score
+loudness	Track loudness
+speechiness	Speechiness score
+acousticness	Acousticness score
+instrumentalness	Instrumentalness score
+liveness	Liveness score
+valence	Musical positivity
+tempo	Track tempo
+duration_min	Track duration in minutes
+views	Number of views
+likes	Number of likes
+comments	Number of comments
+stream	Number of streams
+licensed	Whether the track is licensed
+official_video	Whether the track has an official video
+most_played_on	Platform where the track was most played
+🔎 Project Workflow
+1. Data Exploration
+
+The first step was understanding the structure and characteristics of the dataset.
+
+Examples of exploratory analysis include:
+
+Inspecting the dataset
+Counting distinct artists
+Counting distinct tracks
+Counting distinct albums
+Identifying album types
+Identifying available platforms/channels
+Checking invalid values
+
+Example:
+
+SELECT COUNT(DISTINCT artist) AS total_artists
+FROM spotify;
+
+SELECT COUNT(DISTINCT track) AS total_tracks
+FROM spotify;
+
+SELECT COUNT(DISTINCT album) AS total_albums
+FROM spotify;
+2. Data Cleaning
+
+Before performing the analysis, the dataset was checked for invalid or problematic records.
+
+For example, tracks with a duration of 0 minutes were identified and removed.
+
+SELECT *
 FROM spotify
-GROUP BY 1
+WHERE duration_min = 0;
+
+After identifying these records:
+
+DELETE FROM spotify
+WHERE duration_min = 0;
+
+This ensures that invalid records do not affect the analytical results.
+
+📊 SQL Analysis
+
+The project contains 15 SQL questions divided into three difficulty levels.
+
+🟢 Easy Level
+1. Tracks with More Than 1 Billion Streams
+
+Identify tracks that have more than 1 billion streams.
+
+SELECT track
+FROM spotify
+WHERE stream > 1000000000;
+2. Albums and Their Artists
+SELECT DISTINCT album, artist
+FROM spotify;
+3. Total Comments for Licensed Tracks
+SELECT SUM(comments) AS total_comments
+FROM spotify
+WHERE licensed = TRUE;
+4. Tracks from Single Releases
+SELECT track
+FROM spotify
+WHERE album_type = 'single';
+5. Number of Tracks per Artist
+SELECT
+    artist,
+    COUNT(track) AS total_tracks
+FROM spotify
+GROUP BY artist
+ORDER BY total_tracks DESC;
+🟡 Medium Level
+6. Average Danceability by Album
+SELECT
+    album,
+    AVG(danceability) AS avg_danceability
+FROM spotify
+GROUP BY album
+ORDER BY avg_danceability DESC;
+7. Top 5 Tracks by Energy
+SELECT *
+FROM spotify
+ORDER BY energy DESC
+LIMIT 5;
+8. Views and Likes for Official Videos
+SELECT
+    track,
+    SUM(views) AS total_views,
+    SUM(likes) AS total_likes
+FROM spotify
+WHERE official_video = TRUE
+GROUP BY track
+ORDER BY total_views DESC;
+9. Total Views by Album and Track
+SELECT
+    album,
+    track,
+    SUM(views) AS total_views
+FROM spotify
+GROUP BY album, track
+ORDER BY total_views DESC;
+10. Tracks Streamed More on Spotify Than YouTube
+
+This analysis uses Conditional Aggregation with CASE WHEN.
+
+SELECT *
+FROM
+(
+    SELECT
+        track,
+
+        COALESCE(
+            SUM(
+                CASE
+                    WHEN most_played_on = 'Youtube'
+                    THEN stream
+                END
+            ), 0
+        ) AS streamed_on_youtube,
+
+        COALESCE(
+            SUM(
+                CASE
+                    WHEN most_played_on = 'Spotify'
+                    THEN stream
+                END
+            ), 0
+        ) AS streamed_on_spotify
+
+    FROM spotify
+    GROUP BY track
+) AS platform_comparison
+
+WHERE streamed_on_spotify > streamed_on_youtube
+  AND streamed_on_youtube <> 0;
+🔴 Advanced Level
+11. Top 3 Most-Viewed Tracks for Each Artist
+
+This analysis demonstrates the use of:
+
+CTE
+DENSE_RANK()
+PARTITION BY
+Aggregation
+WITH ranking AS
+(
+    SELECT
+        artist,
+        track,
+        SUM(views) AS total_views,
+
+        DENSE_RANK() OVER
+        (
+            PARTITION BY artist
+            ORDER BY SUM(views) DESC
+        ) AS rank
+    FROM spotify
+    GROUP BY artist, track
 )
-SELECT 
-	album,
-	highest_energy - lowest_energery as energy_diff
+
+SELECT *
+FROM ranking
+WHERE rank <= 3
+ORDER BY artist, rank;
+12. Tracks Above Average Liveness
+
+A subquery is used to calculate the overall average liveness score.
+
+SELECT
+    track,
+    liveness
+FROM spotify
+WHERE liveness >
+(
+    SELECT AVG(liveness)
+    FROM spotify
+);
+13. Energy Difference Between Highest and Lowest Values
+
+This analysis demonstrates how a CTE can simplify a multi-step calculation.
+
+WITH cte AS
+(
+    SELECT
+        album,
+        MAX(energy) AS highest_energy,
+        MIN(energy) AS lowest_energy
+    FROM spotify
+    GROUP BY album
+)
+
+SELECT
+    album,
+    highest_energy - lowest_energy AS energy_diff
 FROM cte
-ORDER BY 2 DESC
-```
-   
-5. Find tracks where the energy-to-liveness ratio is greater than 1.2.
-6. Calculate the cumulative sum of likes for tracks ordered by the number of views, using window functions.
+ORDER BY energy_diff DESC;
+
+Note: highest_energy, lowest_energy, and energy_diff use consistent naming to keep the query clean and readable.
+
+14. Tracks with High Energy-to-Liveness Ratio
+SELECT
+    track,
+    energy,
+    liveness,
+    energy / NULLIF(liveness, 0) AS energy_liveness_ratio
+FROM spotify
+WHERE energy / NULLIF(liveness, 0) > 1.2
+ORDER BY energy_liveness_ratio DESC;
+15. Cumulative Likes Using Window Functions
+
+This analysis demonstrates the use of a cumulative window calculation.
+
+SELECT
+    track,
+    views,
+    likes,
+
+    SUM(likes) OVER
+    (
+        ORDER BY views DESC
+        ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+    ) AS cumulative_likes
+
+FROM spotify
+ORDER BY views DESC;
+⚡ Query Optimization
+
+One of the main objectives of this project was to understand how database indexing can affect query performance.
+
+Step 1 — Analyze the Query
+
+The query was first tested using:
+
+EXPLAIN ANALYZE
+SELECT *
+FROM spotify
+WHERE artist = 'Artist Name';
+
+The execution plan was then reviewed to understand how PostgreSQL was processing the query.
+
+Before Optimization
+
+📸 Execution Plan Before Index
 
 
-Here’s an updated section for your **Spotify Advanced SQL Project and Query Optimization** README, focusing on the query optimization task you performed. You can include the specific screenshots and graphs as described.
 
----
 
-## Query Optimization Technique 
+Replace the image above with your actual EXPLAIN ANALYZE screenshot.
 
-To improve query performance, we carried out the following optimization process:
+Step 2 — Create an Index
 
-- **Initial Query Performance Analysis Using `EXPLAIN`**
-    - We began by analyzing the performance of a query using the `EXPLAIN` function.
-    - The query retrieved tracks based on the `artist` column, and the performance metrics were as follows:
-        - Execution time (E.T.): **7 ms**
-        - Planning time (P.T.): **0.17 ms**
-    - Below is the **screenshot** of the `EXPLAIN` result before optimization:
-      ![EXPLAIN Before Index](https://github.com/najirh/najirh-Spotify-Data-Analysis-using-SQL/blob/main/spotify_explain_before_index.png)
+An index was created on the frequently filtered artist column:
 
-- **Index Creation on the `artist` Column**
-    - To optimize the query performance, we created an index on the `artist` column. This ensures faster retrieval of rows where the artist is queried.
-    - **SQL command** for creating the index:
-      ```sql
-      CREATE INDEX idx_artist ON spotify_tracks(artist);
-      ```
+CREATE INDEX idx_spotify_artist
+ON spotify(artist);
+Step 3 — Analyze the Query Again
 
-- **Performance Analysis After Index Creation**
-    - After creating the index, we ran the same query again and observed significant improvements in performance:
-        - Execution time (E.T.): **0.153 ms**
-        - Planning time (P.T.): **0.152 ms**
-    - Below is the **screenshot** of the `EXPLAIN` result after index creation:
-      ![EXPLAIN After Index](https://github.com/najirh/najirh-Spotify-Data-Analysis-using-SQL/blob/main/spotify_explain_after_index.png)
+The same query was executed again:
 
-- **Graphical Performance Comparison**
-    - A graph illustrating the comparison between the initial query execution time and the optimized query execution time after index creation.
-    - **Graph view** shows the significant drop in both execution and planning times:
-      ![Performance Graph](https://github.com/najirh/najirh-Spotify-Data-Analysis-using-SQL/blob/main/spotify_graphical%20view%203.png)
-      ![Performance Graph](https://github.com/najirh/najirh-Spotify-Data-Analysis-using-SQL/blob/main/spotify_graphical%20view%202.png)
-      ![Performance Graph](https://github.com/najirh/najirh-Spotify-Data-Analysis-using-SQL/blob/main/spotify_graphical%20view%201.png)
+EXPLAIN ANALYZE
+SELECT *
+FROM spotify
+WHERE artist = 'Artist Name';
+After Optimization
 
-This optimization shows how indexing can drastically reduce query time, improving the overall performance of our database operations in the Spotify project.
----
+📸 Execution Plan After Index
 
-## Technology Stack
-- **Database**: PostgreSQL
-- **SQL Queries**: DDL, DML, Aggregations, Joins, Subqueries, Window Functions
-- **Tools**: pgAdmin 4 (or any SQL editor), PostgreSQL (via Homebrew, Docker, or direct installation)
 
-## How to Run the Project
-1. Install PostgreSQL and pgAdmin (if not already installed).
-2. Set up the database schema and tables using the provided normalization structure.
-3. Insert the sample data into the respective tables.
-4. Execute SQL queries to solve the listed problems.
-5. Explore query optimization techniques for large datasets.
 
----
 
-## Next Steps
-- **Visualize the Data**: Use a data visualization tool like **Tableau** or **Power BI** to create dashboards based on the query results.
-- **Expand Dataset**: Add more rows to the dataset for broader analysis and scalability testing.
-- **Advanced Querying**: Dive deeper into query optimization and explore the performance of SQL queries on larger datasets.
+📈 Performance Comparison
+Metric	Before Index	After Index
+Execution Time	7 ms*	0.153 ms*
+Planning Time	0.17 ms*	0.152 ms*
 
----
+*Values should reflect the final EXPLAIN ANALYZE results from the current PostgreSQL environment.
 
-## Contributing
-If you would like to contribute to this project, feel free to fork the repository, submit pull requests, or raise issues.
+Performance Visualization
 
----
 
-## License
-This project is licensed under the MIT License.
+
+
+The comparison demonstrates how indexing can reduce the amount of work required to locate records when filtering on an indexed column.
+
+Important: Actual performance depends on dataset size, PostgreSQL configuration, hardware, cache state, and query structure. For small datasets, PostgreSQL may still prefer a sequential scan.
+
+💡 Key Analytical Insights
+
+The SQL analysis is designed to generate actionable insights such as:
+
+🎵 Track Performance
+
+Identify the tracks receiving the highest number of streams and views.
+
+👤 Artist Performance
+
+Determine which artists have the highest number of tracks and identify their top-performing tracks.
+
+💿 Album Performance
+
+Compare albums based on total views and audio characteristics such as average danceability.
+
+🔥 Audio Characteristics
+
+Analyze tracks with the highest energy and compare energy levels across albums.
+
+📱 Platform Performance
+
+Compare Spotify and YouTube streaming performance to identify tracks performing better on each platform.
+
+❤️ Audience Engagement
+
+Use views, likes, and comments to understand how audiences interact with different tracks.
+
+⚡ Database Performance
+
+Demonstrate how indexing can improve query execution when filtering large datasets.
+
+🛠️ Skills Demonstrated
+
+This project demonstrates practical experience with:
+
+SQL
+SELECT
+WHERE
+GROUP BY
+ORDER BY
+HAVING
+DISTINCT
+Aggregate Functions
+CASE WHEN
+COALESCE
+NULLIF
+Subqueries
+CTEs
+Window Functions
+DENSE_RANK()
+PARTITION BY
+SUM() OVER()
+Conditional Aggregation
+Database Concepts
+PostgreSQL
+Data Cleaning
+Indexing
+Query Execution Plans
+Query Optimization
+Performance Analysis
+Analytical Skills
+Exploratory Data Analysis
+Data Aggregation
+Performance Comparison
+Business-Oriented Analysis
+Insight Generation
+🧰 Technology Stack
+Tool	Purpose
+PostgreSQL	Database & SQL Analysis
+pgAdmin 4	Database Management
+SQL	Data Analysis & Querying
+GitHub	Project Documentation & Version Control
+📁 Project Structure
+Spotify_project/
+│
+├── README.md
+├── Spotify_queres.sql
+├── cleaned_dataset.csv
+├── Spotify logo.jpeg
+│
+└── screenshots/
+    ├── explain_before.png
+    ├── explain_after.png
+    └── performance_comparison.png
+▶️ How to Run the Project
+1. Install PostgreSQL
+
+Install PostgreSQL and pgAdmin 4.
+
+2. Create the Database
+
+Create a new PostgreSQL database for the project.
+
+3. Create the Table
+
+Run the table creation script using the columns defined in the SQL file.
+
+4. Import the Dataset
+
+Import cleaned_dataset.csv into the spotify table.
+
+5. Run the SQL Queries
+
+Open:
+
+Spotify_queres.sql
+
+and execute the queries in PostgreSQL / pgAdmin.
+
+6. Test Query Optimization
+
+Run the EXPLAIN ANALYZE query before and after creating the index.
+
+📸 Project Screenshots
+Data Exploration
+
+
+
+
+SQL Analysis
+
+
+
+
+Query Optimization — Before
+
+
+
+
+Query Optimization — After
+
+
+
+
+Performance Comparison
+
+
+
+
+Add the screenshots to the screenshots folder using the filenames above.
+
+📚 What I Learned
+
+Through this project, I strengthened my ability to:
+
+Work with PostgreSQL databases.
+Explore and clean real-world datasets.
+Write SQL queries at different levels of complexity.
+Use CTEs to structure complex queries.
+Apply Window Functions to analytical problems.
+Compare performance before and after indexing.
+Read and interpret query execution plans.
+Translate raw data into meaningful analytical questions.
+Think about SQL from both an analytical and performance perspective.
+🚀 Future Improvements
+
+Potential future improvements include:
+
+Building an interactive Power BI dashboard from the analyzed data.
+Adding more advanced SQL performance experiments.
+Testing queries on larger datasets.
+Creating additional analytical KPIs.
+Comparing Spotify and YouTube performance in greater detail.
+Automating the data-cleaning process.
+Adding more business-focused insights.
+👨‍💻 Author
+
+Ibrahim Abdrabou
+
+Aspiring Data Analyst focused on:
+
+Excel | Power BI | SQL | Python | Data Analysis
